@@ -1,0 +1,36 @@
+{
+    "name": "mpyw/laravel-pdo-emulation-control",
+    "description": "Temporarily enable/disable PDO prepared statement emulation",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "mpyw",
+            "email": "ryosuke_i_628@yahoo.co.jp"
+        }
+    ],
+    "keywords": ["laravel", "illuminate", "database", "pdo", "prepared", "emulation"],
+    "autoload": {
+        "psr-4": {
+            "Mpyw\\LaravelPdoEmulationControl\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Mpyw\\LaravelPdoEmulationControl\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^7.1",
+        "ext-pdo": "*",
+        "illuminate/database": "^5.8 || ^6.0 || ^7.0 || ^8.0",
+        "illuminate/support": "^5.8 || ^6.0 || ^7.0 || ^8.0",
+        "mpyw/unclosure": "^0.1.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^4.0",
+        "laravel/framework": "^6.0",
+        "friendsofphp/php-cs-fixer": "^2.15",
+        "mockery/mockery": "^1.3"
+    }
+}

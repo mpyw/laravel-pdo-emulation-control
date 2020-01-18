@@ -22,6 +22,8 @@ build:
       - cp docker-compose-ci.yml docker-compose.yml
       - export PHP_VERSION=$(php -r 'preg_match("/^((\d+)[.](\d+))[.](\d+)$/", PHP_VERSION, $m); echo $m[1];')
       - docker-compose up -d
+      - |
+        sh -c 'docker-compose logs -f mysql | { sed "/mysqld: ready for connections/ q" && kill $$ ;}' || :
       - composer install
       - mkdir -p build/logs
 

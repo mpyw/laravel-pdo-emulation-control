@@ -27,7 +27,3 @@ services:
       MYSQL_PASSWORD: password
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
 
-  dockerize:
-    image: jwilder/dockerize
-    entrypoint: ['dockerize', '-timeout', '60s', '-wait', 'tcp://mysql:3306']
-    command: ['tail', '-F', '/dev/null']

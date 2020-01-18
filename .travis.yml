@@ -28,8 +28,6 @@ before_install:
   - curl -L https://github.com/docker/compose/releases/download/1.24.1/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
-  - sudo pip install --ignore-installed PyYAML
-  - sudo pip install docker-compose-wait
 
 before_script:
   - cp docker-compose-ci.yml docker-compose.yml
@@ -40,7 +38,6 @@ before_script:
   - if [ "$PHPUNIT_VERSION" != "" ]; then composer require "phpunit/phpunit:${PHPUNIT_VERSION}" --no-update; fi;
   - composer update
   - mkdir -p build/logs
-  - docker-compose-wait
 
 script:
   - docker-compose exec php sh -c 'cd /code; vendor/bin/phpunit'

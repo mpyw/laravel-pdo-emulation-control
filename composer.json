@@ -25,7 +25,7 @@
         "ext-pdo": "*",
         "illuminate/database": "^5.8 || ^6.0 || ^7.0 || ^8.0",
         "illuminate/support": "^5.8 || ^6.0 || ^7.0 || ^8.0",
-        "mpyw/unclosure": "^0.1.0"
+        "mpyw/unclosure": "^1.0"
     },
     "require-dev": {
         "orchestra/testbench": "^5.0",

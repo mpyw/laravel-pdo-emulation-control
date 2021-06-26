@@ -4,7 +4,7 @@ Temporarily enable/disable PDO prepared statement emulation.
 
 ## Requirements
 
-- PHP: `^7.1` || `^8.0`
+- PHP: `^7.1 || ^8.0`
 - Laravel: `^5.8 || ^6.0 || ^7.0 || ^8.0`
 
 ## Basic Usage

@@ -1,11 +1,11 @@
-# Laravel PDO Emulation Control<br>[![Build Status](https://travis-ci.com/mpyw/laravel-pdo-emulation-control.svg?branch=master)](https://travis-ci.com/mpyw/laravel-pdo-emulation-control) [![Code Coverage](https://scrutinizer-ci.com/g/mpyw/laravel-pdo-emulation-control/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/mpyw/laravel-pdo-emulation-control/?branch=master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mpyw/laravel-pdo-emulation-control/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mpyw/laravel-pdo-emulation-control/?branch=master)
+# Laravel PDO Emulation Control<br>[![Build Status](https://github.com/mpyw/laravel-pdo-emulation-control/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/mpyw/laravel-pdo-emulation-control/actions) [![Code Coverage](https://scrutinizer-ci.com/g/mpyw/laravel-pdo-emulation-control/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/mpyw/laravel-pdo-emulation-control/?branch=master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mpyw/laravel-pdo-emulation-control/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mpyw/laravel-pdo-emulation-control/?branch=master)
 
 Temporarily enable/disable PDO prepared statement emulation.
 
 ## Requirements
 
-- PHP: ^7.1
-- Laravel: ^5.8 || ^6.0 || ^7.0 || ^8.0
+- PHP: `^7.1`
+- Laravel: `^5.8 || ^6.0 || ^7.0 || ^8.0`
 
 ## Basic Usage
 

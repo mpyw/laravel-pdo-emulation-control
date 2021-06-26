@@ -33,9 +33,6 @@ jobs:
           - lib: { laravel: 5.6.*, testbench: 3.6.*, composer_flags: --prefer-stable }
             php: 8.0
 
-    env:
-      COMPOSE_INTERACTIVE_NO_CLI: 1
-
     steps:
       - uses: actions/checkout@v2
 
@@ -57,4 +54,4 @@ jobs:
           sh -c 'docker-compose logs -f mysql | { sed "/mysqld: ready for connections/ q" && kill $$ ;}' || :
         env:
           PHP_VERSION: ${{ matrix.php }}
-      - run: docker-compose exec php sh -c 'cd /code; vendor/bin/phpunit'
+      - run: docker-compose exec -T php sh -c 'cd /code; vendor/bin/phpunit'

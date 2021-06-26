@@ -45,6 +45,7 @@ jobs:
       - run: echo PHP_VERSION=$(php -r 'preg_match("/^((\d+)[.](\d+))[.](\d+)$/", PHP_VERSION, $m); echo $m[1];') >> $GITHUB_ENV
       - name: Lunch docker containers
         run: |
+          echo $PHP_VERSION
           cp docker-compose-ci.yml docker-compose.yml
           docker-compose up -d
           sh -c 'docker-compose logs -f mysql | { sed "/mysqld: ready for connections/ q" && kill $$ ;}' || :

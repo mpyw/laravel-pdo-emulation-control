@@ -42,9 +42,12 @@ jobs:
           composer require "laravel/framework:${{ matrix.lib.laravel }}" --dev --no-update ${{ matrix.lib.composer_flags }}
           composer require "orchestra/testbench:${{ matrix.lib.testbench }}" --dev --no-update ${{ matrix.lib.composer_flags }}
           composer update ${{ matrix.lib.composer_flags }}
+      - run: echo PHP_VERSION=$(php -r 'preg_match("/^((\d+)[.](\d+))[.](\d+)$/", PHP_VERSION, $m); echo $m[1];') >> $GITHUB_ENV
       - name: Lunch docker containers
         run: |
           cp docker-compose-ci.yml docker-compose.yml
           docker-compose up -d
           sh -c 'docker-compose logs -f mysql | { sed "/mysqld: ready for connections/ q" && kill $$ ;}' || :
+        env:
+          PHP_VERSION: ${{ env.PHP_VERSION }}
       - run: docker-compose exec php sh -c 'cd /code; vendor/bin/phpunit'

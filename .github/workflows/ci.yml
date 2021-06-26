@@ -6,6 +6,22 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:8.0
+        ports:
+          - '3306:3306'
+        env:
+          MYSQL_DATABASE: testing
+          MYSQL_USER: testing
+          MYSQL_PASSWORD: testing
+          MYSQL_ROOT_PASSWORD: testing
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=30s
+          --health-retries=5
+
     strategy:
       matrix:
         php: [7.1, 7.2, 7.3, 7.4]
@@ -42,16 +58,31 @@ jobs:
           php-version: ${{ matrix.php }}
           coverage: xdebug
 
-      - name: Adjust package versions
+      - name: Set up MySQL
+        run: |
+          mysql \
+            --host=127.0.0.1 \
+            --user=root \
+            --password=testing <<< "
+              ALTER USER 'testing'@'%' IDENTIFIED WITH mysql_native_password BY 'testing';
+            "
+
+      - name: Adjust Package Versions
         run: |
           composer require "laravel/framework:${{ matrix.lib.laravel }}" --dev --no-update ${{ matrix.lib.composer_flags }}
           composer require "orchestra/testbench:${{ matrix.lib.testbench }}" --dev --no-update ${{ matrix.lib.composer_flags }}
           composer update ${{ matrix.lib.composer_flags }}
-      - name: Lunch docker containers
-        run: |
-          cp docker-compose-ci.yml docker-compose.yml
-          docker-compose up -d
-          sh -c 'docker-compose logs -f mysql | { sed "/mysqld: ready for connections/ q" && kill $$ ;}' || :
+
+      - run: mkdir -p build/logs
+      - run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+
+      - name: Upload Coverage
+        uses: nick-invision/retry@v2
         env:
-          PHP_VERSION: ${{ matrix.php }}
-      - run: docker-compose exec -T php sh -c 'cd /code; vendor/bin/phpunit'
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          timeout_minutes: 1
+          max_attempts: 3
+          command: |
+            composer global require php-coveralls/php-coveralls
+            php-coveralls --coverage_clover=build/logs/clover.xml -v

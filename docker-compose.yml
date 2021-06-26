@@ -17,6 +17,6 @@ services:
     image: mysql:5.7
     environment:
       MYSQL_DATABASE: testing
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+      MYSQL_USER: testing
+      MYSQL_PASSWORD: testing
+      MYSQL_ROOT_PASSWORD: testing

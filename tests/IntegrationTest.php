@@ -15,16 +15,20 @@ class IntegrationTest extends TestCase
      */
     protected function getEnvironmentSetUp($app)
     {
+        $host = \gethostbyname('mysql') !== 'mysql' // Is "mysql" valid hostname?
+            ? 'mysql' // Local
+            : '127.0.0.1'; // CI
+
         $app['config']->set('database.default', 'mysql');
         $app['config']->set('database.connections.mysql', [
             'driver' => 'mysql',
             'read' => [
-                'host' => 'mysql',
+                'host' => $host,
             ],
             'write' => [],
-            'host' => 'mysql',
-            'username' => 'user',
-            'password' => 'password',
+            'host' => $host,
+            'username' => 'testing',
+            'password' => 'testing',
             'database' => 'testing',
         ]);
     }

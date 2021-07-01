@@ -7,6 +7,12 @@ Temporarily enable/disable PDO prepared statement emulation.
 - PHP: `^7.1 || ^8.0`
 - Laravel: `^5.8 || ^6.0 || ^7.0 || ^8.0`
 
+## Installing
+
+```
+composer require mpyw/laravel-pdo-emulation-control
+```
+
 ## Basic Usage
 
 The default implementation is provided by `ConnectionServiceProvider`, however, **package discovery is not available**.

@@ -42,5 +42,12 @@
         "phpstan": "vendor/bin/phpstan analyse --level=9 --configuration=extension.neon src tests phpstan"
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "extra": {
+        "phpstan": {
+            "includes": [
+                "extension.neon"
+            ]
+        }
+    }
 }

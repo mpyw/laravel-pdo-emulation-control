@@ -13,7 +13,7 @@ class IntegrationTest extends TestCase
     /**
      * @param \Illuminate\Foundation\Application $app
      */
-    protected function getEnvironmentSetUp($app)
+    protected function getEnvironmentSetUp($app): void
     {
         $host = \gethostbyname('mysql') !== 'mysql' // Is "mysql" valid hostname?
             ? 'mysql' // Local
@@ -42,7 +42,11 @@ class IntegrationTest extends TestCase
         $db = DB::connection();
         $rp = new \ReflectionProperty($db, $property);
         $rp->setAccessible(true);
-        return $rp->getValue($db);
+        $value = $rp->getValue($db);
+
+        assert($value instanceof Closure || $value instanceof PDO);
+
+        return $value;
     }
 
     protected function assertPdoResolved(): void
@@ -67,9 +71,9 @@ class IntegrationTest extends TestCase
 
     /**
      * @param  \Illuminate\Foundation\Application $app
-     * @return array
+     * @return string[]
      */
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [
             ConnectionServiceProvider::class,

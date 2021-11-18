@@ -1,0 +1,9 @@
+services:
+    -
+        class: Mpyw\LaravelPdoEmulationControl\PHPStan\ConnectionClassExtension
+        tags:
+            - phpstan.broker.methodsClassReflectionExtension
+    -
+        class: Mpyw\LaravelPdoEmulationControl\PHPStan\CallableReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension

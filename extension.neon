@@ -7,3 +7,7 @@ services:
         class: Mpyw\LaravelPdoEmulationControl\PHPStan\CallableReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
+    -
+        class: Mpyw\LaravelPdoEmulationControl\PHPStan\EmulationControllerReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension

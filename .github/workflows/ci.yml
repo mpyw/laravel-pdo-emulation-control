@@ -36,6 +36,11 @@ jobs:
           - { php: 8.1, lib: { laravel: ^6.0 } }
           - { php: 8.1, lib: { laravel: ^6.0, flags: --prefer-lowest } }
           - { php: 7.4, lib: { laravel: ^9.0 } }
+        include:
+          - { php: 8.1, lib: { laravel: ^9.0 }, phpstan: '1' }
+          - { php: 8.1, lib: { laravel: ^8.0 }, phpstan: '1' }
+          - { php: '8.0', lib: { laravel: ^9.0 }, phpstan: '1' }
+          - { php: '8.0', lib: { laravel: ^8.0 }, phpstan: '1' }
 
     steps:
       - uses: actions/checkout@v2
@@ -60,6 +65,7 @@ jobs:
           composer require "laravel/framework:${{ matrix.lib.laravel }}" --dev ${{ matrix.lib.flags }}
 
       - name: PHPStan
+        if: ${{ matrix.phpstan }}
         run: composer phpstan
 
       - run: mkdir -p build/logs

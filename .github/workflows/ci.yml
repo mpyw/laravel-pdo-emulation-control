@@ -50,6 +50,9 @@ jobs:
       - name: PHPStan
         run: composer phpstan
 
+      - name: Clean up Larastan broken cache (Dirty hack for bugs)
+        run: rm -f vendor/orchestra/testbench-core/laravel/vendor vendor/orchestra/testbench-core/laravel/bootstrap/cache/*.php
+
       - run: mkdir -p build/logs
       - run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 

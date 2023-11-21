@@ -18,7 +18,8 @@ composer require mpyw/laravel-pdo-emulation-control
 
 ## Basic Usage
 
-The default implementation is provided by `ConnectionServiceProvider`, however, **package discovery is not available**.
+> [!IMPORTANT]
+> The default implementation is provided by `ConnectionServiceProvider`, however, **package discovery is not available**.
 Be careful that you MUST register it in **`config/app.php`** by yourself.
 
 ```php
@@ -56,13 +57,15 @@ DB::native(function () {
 });
 ```
 
-Note that `DB::getPdo()` `DB::getReadPdo()` are not always called even though these methods directly touch the `PDO` instances.
-**Connections are lazily resolved as possible as they can.**
-`PDO::setAttribute()` is called only after the `PDO` instance has been created and the socket connection to the database has been really established.
+> [!IMPORTANT]
+> Note that `DB::getPdo()` `DB::getReadPdo()` are not always called even though these methods directly touch the `PDO` instances.
+> **Connections are lazily resolved as possible as they can.**
+> `PDO::setAttribute()` is called only after the `PDO` instance has been created and the socket connection to the database has been really established.
 
 ## Advanced Usage
 
-You can extend Connection classes with `ControlsEmulation` trait by yourself.
+> [!TIP]
+> You can extend Connection classes with `ControlsEmulation` trait by yourself.
 
 ```php
 <?php

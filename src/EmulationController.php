@@ -15,10 +15,12 @@ class EmulationController
     /**
      * EmulationController constructor.
      *
-     * @param null|\Closure|\PDO &...$pdos
+     * @param \Closure|\PDO &...$pdos
      */
+    // @phpstan-ignore-next-line parameterByRef.unusedType
     public function __construct(&...$pdos)
     {
+        // @phpstan-ignore arrayFilter.same
         $this->pdos = array_filter($pdos);
     }
 
@@ -50,6 +52,7 @@ class EmulationController
      */
     public function switchingTo(bool $bool, callable $callback, ...$args)
     {
+        // @phpstan-ignore assign.propertyType
         return Value::withEffectForEach($this->pdos, function (PDO $pdo) use ($bool) {
             $original = $pdo->getAttribute(PDO::ATTR_EMULATE_PREPARES);
             $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, $bool);

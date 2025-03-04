@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Mpyw\LaravelPdoEmulationControl\ConnectionServiceProvider;
 use Orchestra\Testbench\TestCase;
 use PDO;
+use PHPUnit\Framework\ExpectationFailedException;
 
 class IntegrationTest extends TestCase
 {
@@ -36,13 +37,12 @@ class IntegrationTest extends TestCase
     /**
      * @param  string        $property
      * @return \Closure|\PDO
+     * @noinspection PhpDocMissingThrowsInspection
      */
-    protected function getConnectionPropertyValue(string $property)
+    protected function getConnectionPropertyValue(string $property): \Closure|\PDO
     {
-        $db = DB::connection();
-        $rp = new \ReflectionProperty($db, $property);
-        $rp->setAccessible(true);
-        $value = $rp->getValue($db);
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $value = (new \ReflectionProperty($db = DB::connection(), $property))->getValue($db);
 
         assert($value instanceof Closure || $value instanceof PDO);
 
@@ -80,13 +80,39 @@ class IntegrationTest extends TestCase
         ];
     }
 
+    /**
+     * @throws ExpectationFailedException
+     *
+     * @phpstan-assert false $condition
+     */
+    protected function assertPdoAttrTruthy(mixed $condition, string $message = ''): void {
+        if (version_compare(PHP_VERSION, '8.4', '>=')) {
+            $this->assertTrue($condition, $message);
+        } else {
+            $this->assertSame(1, $condition, $message);
+        }
+    }
+
+    /**
+     * @throws ExpectationFailedException
+     *
+     * @phpstan-assert false $condition
+     */
+    protected function assertPdoAttrFalsy(mixed $condition, string $message = ''): void {
+        if (version_compare(PHP_VERSION, '8.4', '>=')) {
+            $this->assertFalse($condition, $message);
+        } else {
+            $this->assertSame(0, $condition, $message);
+        }
+    }
+
     public function testEagerEmulated(): void
     {
         $this->assertPdoNotResolved();
         $this->assertReadPdoNotResolved();
 
-        $this->assertSame(0, DB::getReadPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
-        $this->assertSame(0, DB::getPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
+        $this->assertPdoAttrFalsy(DB::getReadPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
+        $this->assertPdoAttrFalsy(DB::getPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
 
         $this->assertPdoResolved();
         $this->assertReadPdoResolved();
@@ -95,8 +121,8 @@ class IntegrationTest extends TestCase
             $this->assertPdoResolved();
             $this->assertReadPdoResolved();
 
-            $this->assertSame(1, DB::getReadPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
-            $this->assertSame(1, DB::getPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
+            $this->assertPdoAttrTruthy(DB::getReadPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
+            $this->assertPdoAttrTruthy(DB::getPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
 
             $this->assertPdoResolved();
             $this->assertReadPdoResolved();
@@ -107,8 +133,8 @@ class IntegrationTest extends TestCase
         $this->assertPdoResolved();
         $this->assertReadPdoResolved();
 
-        $this->assertSame(0, DB::getReadPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
-        $this->assertSame(0, DB::getPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
+        $this->assertPdoAttrFalsy(DB::getReadPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
+        $this->assertPdoAttrFalsy(DB::getPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
 
         $this->assertPdoResolved();
         $this->assertReadPdoResolved();
@@ -125,8 +151,8 @@ class IntegrationTest extends TestCase
             $this->assertPdoNotResolved();
             $this->assertReadPdoNotResolved();
 
-            $this->assertSame(1, DB::getReadPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
-            $this->assertSame(1, DB::getPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
+            $this->assertPdoAttrTruthy(DB::getReadPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
+            $this->assertPdoAttrTruthy(DB::getPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
 
             $this->assertPdoResolved();
             $this->assertReadPdoResolved();
@@ -136,8 +162,8 @@ class IntegrationTest extends TestCase
         $this->assertPdoResolved();
         $this->assertReadPdoResolved();
 
-        $this->assertSame(0, DB::getReadPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
-        $this->assertSame(0, DB::getPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
+        $this->assertPdoAttrFalsy(DB::getReadPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
+        $this->assertPdoAttrFalsy(DB::getPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
 
         $this->assertPdoResolved();
         $this->assertReadPdoResolved();
@@ -160,8 +186,8 @@ class IntegrationTest extends TestCase
         $this->assertPdoNotResolved();
         $this->assertReadPdoNotResolved();
 
-        $this->assertSame(0, DB::getReadPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
-        $this->assertSame(0, DB::getPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
+        $this->assertPdoAttrFalsy(DB::getReadPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
+        $this->assertPdoAttrFalsy(DB::getPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
 
         $this->assertPdoResolved();
         $this->assertReadPdoResolved();
@@ -176,8 +202,8 @@ class IntegrationTest extends TestCase
         $this->assertPdoNotResolved();
         $this->assertReadPdoNotResolved();
 
-        $this->assertSame(1, DB::getReadPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
-        $this->assertSame(1, DB::getPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
+        $this->assertPdoAttrTruthy(DB::getReadPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
+        $this->assertPdoAttrTruthy(DB::getPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
 
         $this->assertPdoResolved();
         $this->assertReadPdoResolved();
@@ -186,8 +212,8 @@ class IntegrationTest extends TestCase
             $this->assertPdoResolved();
             $this->assertReadPdoResolved();
 
-            $this->assertSame(0, DB::getReadPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
-            $this->assertSame(0, DB::getPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
+            $this->assertPdoAttrFalsy(DB::getReadPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
+            $this->assertPdoAttrFalsy(DB::getPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
 
             $this->assertPdoResolved();
             $this->assertReadPdoResolved();
@@ -198,8 +224,8 @@ class IntegrationTest extends TestCase
         $this->assertPdoResolved();
         $this->assertReadPdoResolved();
 
-        $this->assertSame(1, DB::getReadPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
-        $this->assertSame(1, DB::getPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
+        $this->assertPdoAttrTruthy(DB::getReadPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
+        $this->assertPdoAttrTruthy(DB::getPdo()->getAttribute(PDO::ATTR_EMULATE_PREPARES));
 
         $this->assertPdoResolved();
         $this->assertReadPdoResolved();

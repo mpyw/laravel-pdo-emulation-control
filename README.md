@@ -1,4 +1,4 @@
-# Laravel PDO Emulation Control<br>[![Build Status](https://github.com/mpyw/laravel-pdo-emulation-control/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/mpyw/laravel-pdo-emulation-control/actions) [![Coverage Status](https://coveralls.io/repos/github/mpyw/laravel-pdo-emulation-control/badge.svg?branch=master)](https://coveralls.io/github/mpyw/laravel-pdo-emulation-control?branch=master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mpyw/laravel-pdo-emulation-control/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mpyw/laravel-pdo-emulation-control/?branch=master)
+# Laravel PDO Emulation Control<br>[![Build Status](https://github.com/mpyw/laravel-pdo-emulation-control/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/mpyw/laravel-pdo-emulation-control/actions) [![Coverage Status](https://coveralls.io/repos/github/mpyw/laravel-pdo-emulation-control/badge.svg?branch=master)](https://coveralls.io/github/mpyw/laravel-pdo-emulation-control?branch=master)
 
 Temporarily enable/disable PDO prepared statement emulation.
 

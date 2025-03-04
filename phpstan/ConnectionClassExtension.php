@@ -12,7 +12,7 @@ final class ConnectionClassExtension implements MethodsClassReflectionExtension
     public function hasMethod(ClassReflection $classReflection, string $methodName): bool
     {
         return \in_array($methodName, ['emulated', 'native'], true)
-            && \is_a($classReflection->getName(), ConnectionInterface::class, true);
+            && $classReflection->is(ConnectionInterface::class);
     }
 
     public function getMethod(ClassReflection $classReflection, string $methodName): MethodReflection

@@ -24,18 +24,19 @@ jobs:
 
     strategy:
       matrix:
-        php: ['8.0', 8.1, 8.2]
-        lib:
-          - { laravel: ^11.0 }
-          - { laravel: ^10.0 }
-          - { laravel: ^9.0 }
+        php: [8.2, 8.3, 8.4]
+        laravel:
+          - ^13.0.x-dev
+          - ^12.0
+          - ^11.0
         exclude:
-          - { php: 8.0, lib: { laravel: ^10.0 } }
-          - { php: 8.0, lib: { laravel: ^11.0 } }
-          - { php: 8.1, lib: { laravel: ^11.0 } }
+          - php: 8.2
+            laravel: ^13.0.x-dev
         include:
-          - { lib: { laravel: ^9.0 }, phpstan: 1 }
-          - { lib: { laravel: ^10.0 }, phpstan: 1 }
+          - laravel: ^11.0
+            larastan: 1
+          - laravel: ^12.0
+            larastan: 1
 
     steps:
       - uses: actions/checkout@v3
@@ -47,19 +48,16 @@ jobs:
           coverage: xdebug
 
       - name: Remove impossible dependencies
-        if: ${{ matrix.phpstan != 1 }}
+        if: ${{ matrix.larastan != 1 }}
         run: composer remove nunomaduro/larastan --dev --no-update
 
       - name: Adjust Package Versions
         run: |
-          composer require "laravel/framework:${{ matrix.lib.laravel }}" --dev
+          composer require "laravel/framework:${{ matrix.laravel }}" --dev
 
       - name: PHPStan
-        if: ${{ matrix.phpstan == 1 }}
+        if: ${{ matrix.larastan == 1 }}
         run: composer phpstan
-
-      - name: Clean up Larastan broken cache (Dirty hack for bugs)
-        run: rm -f vendor/orchestra/testbench-core/laravel/vendor vendor/orchestra/testbench-core/laravel/bootstrap/cache/*.php
 
       - run: mkdir -p build/logs
       - run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
@@ -69,7 +67,7 @@ jobs:
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COVERALLS_PARALLEL: 'true'
-          COVERALLS_FLAG_NAME: 'laravel:${{ matrix.lib.laravel }}'
+          COVERALLS_FLAG_NAME: 'laravel:${{ matrix.laravel }}'
         with:
           timeout_minutes: 1
           max_attempts: 3

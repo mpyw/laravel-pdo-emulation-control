@@ -17,7 +17,6 @@ class EmulationController
      *
      * @param \Closure|\PDO &...$pdos
      */
-    // @phpstan-ignore-next-line parameterByRef.unusedType
     public function __construct(&...$pdos)
     {
         // @phpstan-ignore arrayFilter.same
